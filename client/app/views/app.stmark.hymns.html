@@ -1,0 +1,107 @@
+<div class="container" >
+       <div> 
+        <table width="100%" border="0">
+          <tr >
+            <td>
+              <h4> <p> Choir Hymns  <input type="text"  [(ngModel)]='searchData' (ngModelChange)="filterData($event)"/>  </p> <p> {{error}} </p> </h4>
+            </td>
+            <td align="right"> 
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+            </td>
+          </tr>
+        </table>
+      
+      </div>
+      <div class="table-responsive">
+           <table class="table table-bordered table-hover"> 
+                <thead>
+                        <th> # </th> 
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>Song Sheet Link</th>
+                        <th>Song Link</th>
+                        <th>Patterrn</th>
+                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" /> </th>
+                 </thead>
+                <tbody> 
+                    <tr *ngFor="let data of hymnsData ; let rowindex = index">
+                        <td *ngIf='!editFlag || data._id !== editId'> {{rowindex+1}}   </td> 
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.name}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.author}}    </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.songsheet}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.song}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.pattern}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                            <input type="image" class='btn' height="24" weight="24"  (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png"/> &nbsp;&nbsp; 
+                            <input type="image" class='btn' height="24" weight="24"  (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png"/> 
+                        </td>
+
+                        <!-- EDIT ADD Data --> 
+                        <td *ngIf='editFlag && data._id == editId' colspan="8">
+                             <form class="form-horizontal" [formGroup]='formDatas'> 
+                                <div class="form-group">
+                                  <label  class='control-label col-sm-2'>Name</label>
+                                  <div class="col-sm-4">
+                                    <input type='text' class='form-control' id='#iname' name='name' formControlName="name"  required  autofocus>
+                                 </div>
+                                 <label  class='control-label col-sm-2'>By</label>
+                                  <div class="col-sm-4">
+                                    <input type='text' class='form-control' id='#iauthor' name='author' formControlName="author"  >
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label  class='control-label col-sm-2'>SongSheet Link</label>
+                                 <div class="col-sm-8">
+                                    <input type='email' class='form-control' id='#isongsheet' name='songsheet' formControlName="songsheet" >
+                                 </div>
+                               </div>
+
+                               <div class="form-group">
+                                <label  class='control-label col-sm-2'>Song Link</label>
+                                 <div class="col-sm-8">
+                                    <input type='text' class='form-control' id='#isong' name='song' formControlName="song" >
+                                 </div>
+                               </div>
+
+                               <div class="form-group">
+                                <label  class='control-label col-sm-2'>Song Pattern</label>
+                                 <div class="col-sm-3">
+                                    <input type='text' class='form-control' id='#pattern' name='pattern' formControlName="pattern">
+                                 </div>
+                                 <div style="float:right">
+                                   <input type="image" (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png"/> &nbsp; &nbsp;
+                                   <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png"/>  &nbsp; &nbsp;
+                                 </div>    
+                               </div>
+                             </form>  
+
+                        </td>
+                    </tr>
+                </tbody>
+           </table>    
+
+            <div *ngIf='alldata.length > 10'> 
+               <ul *ngIf='pager.pages && pager.pages.length' class='pagination'>
+                   <li [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(1)'> First </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(pager.currentPage-1)'> Previous </a>
+                   </li> 
+                   <li *ngFor='let page of pager.pages' [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(page)'> {{page}} </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===pager.totalPages}'> 
+                       <a (click)='setPage(pager.currentPage+1)'>Next </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===pager.totalPages}'> 
+                       <a (click)='setPage(pager.totalPages)'>Last </a>
+                   </li> 
+               </ul>
+           </div>    
+
+      </div>
+
+ 
+
+</div>

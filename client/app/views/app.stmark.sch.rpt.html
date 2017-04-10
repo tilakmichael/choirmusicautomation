@@ -1,0 +1,114 @@
+<div class="container" >
+       <div> 
+        <table width="100%" border="0">
+          <tr >
+            <td>
+              <h4> <p> Choir Schedule Report: From  <input type="date"  [(ngModel)]='fromDate' (ngModelChange)="filterFromDate($event)"/>  
+              To <input type="date"  [(ngModel)]='endDate' (ngModelChange)="filterEndDate($event)"/>  
+              
+              </p> <p> {{error}} </p> </h4>
+    
+            </td>
+            <td align="right">
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+            </td>
+          </tr>
+        </table>
+      
+      </div>
+           <div class="panel panel-success row col-sm-10">
+               <div class='panel-heading' >
+                   <table width="100%" border="0"> 
+                        <tr>
+                            <td>  
+                               <input  height="48" weight="48" type="image" class='btn' (click)='prevDoc()'   [disabled]='index==0'  src="app/image/back.ico"/> 
+                            </td>
+                            <td align="center"> 
+                              <strong>   {{this.date | date :'shortDate' }}  :  {{this.name}} </strong>
+
+                              </td>
+                            <td align="right">
+                              <input type="image" class='btn' height="48" weight="48"  (click)='nextDoc()'  [disabled]='index == maxNo '  src="app/image/forward.ico"/> 
+                            </td>
+                        </tr>
+                   </table>
+               </div>  
+  
+               <div class='panel-body'>
+                   <div class='card card-primary'>
+                       <strong>
+                       <!--p *ngIf='enteranceLnk' > Enterance : <a href='{{enteranceLnk}}' target="_blank" > {{enterance}} </a>  </p>
+                       <p *ngIf='!enteranceLnk' > Enterance :  {{enterance}}   </p-->
+                        
+                        <div *ngIf='enteranceLnk; then content1 ;  else elscontent1'> </div>
+                        <ng-template #content1> Enterance :  <a href='{{enteranceLnk}}' target="_blank" > {{enterance}} </a>  </ng-template>
+                        <ng-template #elscontent1>  Enterance :  {{enterance}} </ng-template> 
+                        <br/>
+
+                        
+                        <div *ngIf='offertoryLnk; then content2 ;  else elscontent2'> </div>
+                        <ng-template #content2> Ofertory :  <a href='{{offertoryLnk}}' target="_blank" > {{offertory}} </a>  </ng-template>
+                        <ng-template #elscontent2> Ofertory  : {{offertory}}  </ng-template> 
+                        <br/>
+
+                        
+                        <div *ngIf='communionLnk; then content3 ;  else elscontent3'> </div>
+                        <ng-template #content3> Communion :  <a href='{{communionLnk}}' target="_blank" > {{communion}} </a>  </ng-template>
+                        <ng-template #elscontent3> Communion  : {{communion}}  </ng-template> 
+                        <br/> 
+
+                                    
+                        <div *ngIf='sendingLnk; then content4 ;  else elscontent4'> </div>
+                        <ng-template #content4> Sending :  <a href='{{sendingLnk}}' target="_blank" > {{sending}} </a>  </ng-template>
+                        <ng-template #elscontent4> Sending  : {{sending}}  </ng-template> 
+                        <br/>
+
+                         <div *ngIf='name1'> 
+                            <div *ngIf='song1Lnk; then content5 ;  else elscontent5'> </div>
+                            <ng-template #content5> {{name1}}  :  <a href='{{song1Lnk}}' target="_blank" > {{name1}} </a>  </ng-template>
+                            <ng-template #elscontent5> {{name1}}   : {{name1}}  </ng-template> 
+                            <br/>
+                       
+                         </div>
+
+                        <div *ngIf='name2'> 
+                            <div *ngIf='song2Lnk; then content6 ;  else elscontent6'> </div>
+                            <ng-template #content6> {{name2}}  :  <a href='{{song2Lnk}}' target="_blank" > {{name2}} </a>  </ng-template>
+                            <ng-template #elscontent6> {{name2}}   : {{name2}}  </ng-template> 
+                            <br/>
+                       
+                         </div>
+                        </strong>
+                   </div>
+               </div>  
+         
+      </div>
+
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+</div>

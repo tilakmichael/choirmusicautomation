@@ -1,0 +1,53 @@
+<div class="container" >
+        <div> 
+        <table width="100%" border="0">
+          <tr >
+            <td>
+               <h4> Choir Groups {{error}} </h4>
+            </td>
+            <td align="right"> 
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+            </td>
+          </tr>
+        </table>
+      
+      </div>
+      <div class="table-responsive">
+           <table class="table table-bordered table-hover"> 
+                <thead>
+                        <th> # </th> 
+                        <th>Group</th>
+                        <th>Conductor</th>
+                        <th>Description</th>
+                         <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" /> </th>
+                 </thead>
+                <tbody> 
+                    <tr *ngFor="let data of alldata ; let rowindex = index">
+                        <td *ngIf='!editFlag || data._id !== editId'> {{rowindex+1}}   </td> 
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.name}}    </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.email}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.description}}   </td>
+ 
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                            <input type="image" class='btn'  (click)="editData(data._id, rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png"/> &nbsp;&nbsp; 
+                            <input type="image" class='btn'   (click)="deleteData(data._id, rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png"/> 
+                        </td>
+                        <!-- EDIT ADD Data --> 
+                        <td *ngIf='editFlag && data._id == editId' colspan="5">
+                            <div> 
+                                <p> Group Name: <input type="text" name="name" [(ngModel)]="name" placeholder="Group Name" required autofocus/> 
+                                    Choir Master: <input type="text" name="email" [(ngModel)]="email" placeholder="Conductor Name" required/>
+                                    Description: <input type="text" rows=3 name="desc" [(ngModel)]="description" placeholder="Description"/> 
+                                    <input type="image" class='btn'  (click)="saveData(data._id, rowindex)"  [disabled]="!editFlag" value="Save"  src="app/image/saveb.png"/> &nbsp;&nbsp; 
+                                    <input type="image" class='btn'  (click)="cancelData(data._id, rowindex)"  [disabled]="!editFlag" value="Cancel"  src="app/image/cancelb.png"/> 
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+           </table>    
+      </div>
+
+ 
+
+</div>

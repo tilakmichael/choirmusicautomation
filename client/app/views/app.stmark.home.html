@@ -1,0 +1,85 @@
+<div class="container" >
+   <body>
+       <div>
+
+          <nav class="navbar navbar-default">
+            <div class="container-fluid navbox" >
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">St. Mark Church: {{groupName}}</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li ><a [routerLink]="['home']">Home</a></li>
+                <li class="dropdown"  *ngIf='_auth.authenticated()'  >
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Setup<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                       <li><a  [routerLink]="['group']">Choir Groups</a></li>
+                       <li><a  [routerLink]="['member']">Members </a></li>
+                       <li><a  [routerLink]="['hymns']">Songs List</a></li>
+                       
+                    </ul>
+                 </li>
+                 <li class="dropdown"  *ngIf='_auth.authenticated()' >
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Entries<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                       <li><a [routerLink]="['sch']">Schedule</a></li>
+                    </ul>
+                 </li>
+
+                <li  *ngIf='_auth.authenticated()' ><a [routerLink]="['schrpt']">Schedules</a></li>
+              </ul>
+
+               <ul class="nav navbar-nav navbar-right">
+                <li  *ngIf='!_auth.authenticated()' >  <a  href="#"  (click) = '_auth.login()' *ngIf='!_auth.authenticated()' >Login</a>   </li>
+                <li class="dropdown"   *ngIf='this._auth.authenticated()'>
+                   <span  data-toggle="dropdown" class="dropdown-toggle"> 
+                      <!--input type='image' class='img-circle'  [src]="_common.getProfileImage()" height="46" width="46"  data-toggle="dropdown" class="dropdown-toggle"/--> 
+                      <input type='image' class='img-circle'  [src]="_common.getProfileImage()" height="46" width="46" /> 
+
+                      <!--b class="caret"></b-->
+                   </span>
+                    <ul class="dropdown-menu">
+                       
+                       <li><a  href="#"  (click) = '_auth.logout()'  *ngIf='_auth.authenticated()' >Logout</a></li>
+                       <li><a  [routerLink]="['aboutme']" *ngIf='_auth.authenticated()'>About Me</a>  </li>
+                    </ul>  
+                 </li>
+                </ul>
+
+              <!--ul class="nav navbar-nav navbar-right">
+                <li>
+                <a href="#" (click) = '_auth.login()'> profile</a>
+                </li>
+              </ul-->
+            </div>
+          </nav>
+          
+       </div>
+    <hr/>
+
+    <!-- Body -->
+    <div>
+        <router-outlet>      </router-outlet>
+    </div>
+
+
+
+    <!-- Footer -->
+    <div>
+      <hr/>
+         <div class="text-center center-block">
+            <p class="txt-railway"></p>
+            <br />
+                <a href="" >  <i id="social-fb"  class="fa fa-facebook social">     <img src="app/image/facebook.png" height="32" width="32"/>  </i></a>
+&nbsp; &nbsp;   <a href="" >  <i id="social-tw"  class="fa fa-twitter social" >     <img src="app/image/twitter.png"  height="32" width="32"/> </i></a>
+&nbsp; &nbsp;   <a href="" >  <i id="social-rss" class="fa fa-rss social">         <img src="app/image/rss.jpg" height="32" width="32"/> </i>  </a>
+&nbsp; &nbsp;   <a href="" >  <i id="social-lnk" class="fa fa-linkedin social">    <img src="app/image/linkedin.png" height="32" width="32"/> </i></a>
+&nbsp; &nbsp;   <a href="" >  <i id="social-gp"  class="fa fa-google-plus social"> <img src="app/image/google.png" height="32" width="32"/> </i></a>
+         </div>
+         <hr />
+     </div>
+
+
+  </body>
+
+ </div>
+

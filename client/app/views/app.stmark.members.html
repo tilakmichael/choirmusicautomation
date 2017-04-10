@@ -1,0 +1,148 @@
+<div class="container" >
+       <div> 
+        <table width="100%" border="0">
+          <tr >
+            <td>
+               <h4> <p> Choir Members  <input type="text"  [(ngModel)]='searchData' (ngModelChange)="filterData($event)" />  </p> <p> {{error}} </p> </h4>
+            </td>
+            <td align="right"> 
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+            </td>
+          </tr>
+        </table>
+      
+      </div>
+      <div class="table-responsive">
+           <table class="table table-bordered table-hover"> 
+                <thead>
+                        <th> # </th> 
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>eMail</th>
+                        <th>Contact</th>
+                        <th>Birth Date</th>
+                        <th>Skill</th>
+                        <th>Admin</th>
+                        <th>Choir</th>
+                        <th>Active</th>
+                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" /> </th>
+                 </thead>
+                <tbody> 
+                    <tr *ngFor="let data of memberData ; let rowindex = index">
+                        <td *ngIf='!editFlag || data._id !== editId'> {{rowindex+1}}   </td> 
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.fname}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.lname}}    </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.email}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.phone}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.dob}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> {{data.trait}}   </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                             <input   [ngModel]="data.admin" type="checkbox" disabled>
+                        </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                              <select [ngModel]="data.choir" disabled>
+                                  <option *ngFor='let cg of choirData' [value]='cg._id' > {{cg.name}} </option>
+                             </select>    
+                         </td>
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                            <input   [ngModel]="data.active" type="checkbox" disabled>
+                       </td> 
+
+                        <td *ngIf='!editFlag || data._id !== editId'> 
+                            <input type="image" class='btn' height="24" weight="24"   (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png"/> &nbsp;&nbsp; 
+                            <input type="image" class='btn' height="24" weight="24"   (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png"/> 
+                        </td>
+
+                        <!-- EDIT ADD Data --> 
+                        <td *ngIf='editFlag && data._id == editId' colspan="11">
+                             <form class="form-horizontal" [formGroup]='formDatas'> 
+                                <div class="form-group">
+                                  <label  class='control-label col-sm-2'>Name</label>
+                                  <div class="col-sm-4">
+                                    <input type='text' class='form-control' id='#ifname' name='fname' formControlName="fname"  required  autofocus>
+                                 </div>
+                                 <label  class='control-label col-sm-2'>Name</label>
+                                  <div class="col-sm-4">
+                                    <input type='text' class='form-control' id='#ilname' name='lname' formControlName="lname"  required>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label  class='control-label col-sm-2'>eMail</label>
+                                 <div class="col-sm-3">
+                                    <input type='email' class='form-control' id='#iemail' name='email' formControlName="email"  required>
+                                 </div>
+                                <label  class='control-label col-sm-2'>Phone</label>
+                                 <div class="col-sm-3">
+                                    <input type='text' class='form-control' id='#iphone' name='phone' formControlName="phone" >
+                                 </div>
+                               </div>
+                               <div class="form-group">
+                         
+                                <label  class='control-label col-sm-2'>Skill</label>
+                                 <div class="col-sm-3">
+                                    <input type='text' class='form-control' id='#trait' name='trait' formControlName="trait">
+                                 </div>
+
+                                 <label  class='control-label col-sm-2'>Choir</label>
+                                 <div class="col-sm-3">
+                                    <select class='form-control' id='#ichoir' name='choir' formControlName="choir" >
+                                        <option *ngFor='let cg of choirData' [value]='cg._id' > {{cg.name}} </option>
+                                    </select>    
+                              
+                                 </div>
+                               </div>
+                              <div class="form-group">
+                                <label  class='control-label col-sm-2'>Birth Date</label>
+                                 <div class="col-sm-2">
+                                      <input  class='form-control' id='#idob' name='dob' formControlName="dob" type="date"> 
+                                 </div>
+                                   
+                                 <label  class='control-label col-sm-2'>Admin</label>
+                                 <div class="col-sm-1">
+                                      <input  class='form-control' id='#iadmin' name='admin' formControlName="admin" type="checkbox"> 
+                                 </div>
+                                 
+                                <label  class='control-label col-sm-2'>Active</label>
+                                 <div class="col-sm-1">
+                                    <input  class='form-control' id='#iactive' name='active' formControlName="active" type="checkbox"> 
+                                 </div>
+                               <!--/div-->
+
+
+                               <div style="float:right">
+                                  <input type="image"  (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png"/> &nbsp; &nbsp;
+                                  <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png"/>  &nbsp; &nbsp;
+                               </div>    
+                              </div>
+                             </form>  
+
+                        </td>
+                    </tr>
+                </tbody>
+           </table>    
+
+            <div *ngIf='alldata.length > 10'> 
+               <ul *ngIf='pager.pages && pager.pages.length' class='pagination'>
+                   <li [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(1)'> First </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(pager.currentPage-1)'> Previous </a>
+                   </li> 
+                   <li *ngFor='let page of pager.pages' [ngClass]='{disabled:pager.currentPage===1}'> 
+                       <a (click)='setPage(page)'> {{page}} </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===pager.totalPages}'> 
+                       <a (click)='setPage(pager.currentPage+1)'>Next </a>
+                   </li> 
+                   <li [ngClass]='{disabled:pager.currentPage===pager.totalPages}'> 
+                       <a (click)='setPage(pager.totalPages)'>Last </a>
+                   </li> 
+               </ul>
+           </div>    
+
+      </div>
+
+ 
+
+</div>
