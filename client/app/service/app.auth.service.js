@@ -16,9 +16,10 @@ var Auth = (function () {
         //console.log('Mongo URL : ' +  config.mongo.url) ;
         var _this = this;
         // Configure Auth0
-        this.authkey = process.env.AUTH_KEY;
-        this.authdomain = process.env.AUTH_DOMAIN;
-        this.lock = new Auth0Lock(this.authkey, this.authdomain, {});
+        // public authkey:string = process.env.AUTH_KEY|| '3iBRZy3N2NguzPBFV3xb95IJgo2laYEZ'; 
+        // public authdomain:string=process.env.AUTH_DOMAIN || 'tilakmichael.auth0.com' ;
+        // lock = new Auth0Lock(this.authkey, this.authdomain, {});
+        this.lock = new Auth0Lock('3iBRZy3N2NguzPBFV3xb95IJgo2laYEZ', 'tilakmichael.auth0.com', {});
         this.lock.on("authenticated", function (authResult) {
             _this.lock.getProfile(authResult.idToken, function (error, profile) {
                 if (error) {

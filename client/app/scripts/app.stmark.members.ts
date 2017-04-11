@@ -24,7 +24,7 @@ export class AppMembers implements OnInit{
     public formDatas:FormGroup ; 
     public editFlag:boolean = false ;
     public editId:string = undefined ;
-    public emptyData= {"_id":"-1","fname": "","lname": "","email": "", "phone": "", "dob":"", "admin": "",  "active": "true",   "trait": "" , "choir": "", "demo":""} ;
+    public emptyData= {"_id":"-1","fname": "","lname": "","email": "", "phone": "", "dob":"", "admin": "",  "active": "true",   "trait": "" , "choir": "","resp":"", "demo":""} ;
     public pager:any = {};
     public searchData:string ;
 

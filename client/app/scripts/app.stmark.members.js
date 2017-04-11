@@ -25,7 +25,7 @@ var AppMembers = (function () {
         this.table = 'members';
         this.editFlag = false;
         this.editId = undefined;
-        this.emptyData = { "_id": "-1", "fname": "", "lname": "", "email": "", "phone": "", "dob": "", "admin": "", "active": "true", "trait": "", "choir": "", "demo": "" };
+        this.emptyData = { "_id": "-1", "fname": "", "lname": "", "email": "", "phone": "", "dob": "", "admin": "", "active": "true", "trait": "", "choir": "", "resp": "", "demo": "" };
         this.pager = {};
     }
     ;

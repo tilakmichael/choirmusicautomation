@@ -110,10 +110,10 @@ var AppDataService = (function () {
             if (memberData.length >= 0) {
                 _this._common.setChoir(memberData[0].choir);
                 _this._common.setadmin(memberData[0].admin);
-                _this._common.setdemo(memberData[0].demo);
+                _this._common.setdemo((memberData[0].demo ? 'Y' : null));
                 profile.choir = memberData[0].choir;
                 profile.admin = memberData[0].admin;
-                profile.demo = memberData[0].demo;
+                profile.demo = (memberData[0].demo ? 'Y' : profile.demo);
                 localStorage.setItem('profile', JSON.stringify(profile));
                 retval = true;
             }

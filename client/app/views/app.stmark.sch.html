@@ -3,13 +3,13 @@
         <table width="100%" border="0">
           <tr >
             <td>
-              <h4> <p> Choir Schedule <input type="text"  [(ngModel)]='searchName' (ngModelChange)="filterData($event)"/>  
+              <h4> <p> Choir Schedule <input type="text"  [(ngModel)]='searchName' (ngModelChange)="filterData($event)" placeholder="Search in Name"/>  
               <input type="date"  [(ngModel)]='searchDate' (ngModelChange)="filterDate($event)"/>  
               
               </p> <p> {{error}} </p> </h4>
             </td>
             <td align="right"> 
-              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png" title="Home"/>
             </td>
           </tr>
         </table>
@@ -25,7 +25,7 @@
                         <th>Offertory</th>
                         <th>Communion</th>
                         <th>Sending</th>
-                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" /> </th>
+                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png"  title="Create"/> </th>
                  </thead>
                 <tbody> 
                     <tr *ngFor="let data of schData ; let rowindex = index">
@@ -54,9 +54,9 @@
                         </td>
 
                         <td *ngIf='!editFlag || data._id !== editId'> 
-                            <input type="image" class='btn' height="24" weight="24"  (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png"/>  
-                            <input type="image" class='btn' height="24" weight="24"  (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png"/> 
-                            <input type="image" class='btn' height="24" weight="24"  (click)="mailData(data._id,rowindex)"  [disabled]="editFlag  || data.mailed=='Y' " value="eMail"  src="app/image/mail.png"/>
+                            <input type="image" class='btn' height="24" weight="24"  (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png" title="Edit"/>  
+                            <input type="image" class='btn' height="24" weight="24"  (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png" title="Delete"/> 
+                            <input type="image" class='btn' height="24" weight="24"  (click)="mailData(data._id,rowindex)"  [disabled]="editFlag  || data.mailed=='Y' " value="eMail"  src="app/image/mail.png" title="Mail"/>
                             
                         </td>
 
@@ -82,7 +82,7 @@
                                  </div>
                               </div>
                               <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Enterance</label>
+                                 <label  class='control-label col-sm-1'>Enterance</label>
                                  <div class="col-sm-8">
                                     <select class='form-control' id='#ienterance' name='enterance' formControlName="enterance" required>
                                         <option *ngFor='let _data of hymnsData' [value]='_data._id'> {{_data.name}} </option> 
@@ -91,7 +91,7 @@
                                </div>
 
                               <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Offertory</label>
+                                 <label  class='control-label col-sm-1'>Offertory</label>
                                  <div class="col-sm-8">
                                     <select class='form-control' id='#ioffertory' name='offertory' formControlName="offertory" required>
                                         <option *ngFor='let _data of hymnsData' [value]='_data._id'> {{_data.name}} </option> 
@@ -100,7 +100,7 @@
                                </div>
 
                               <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Communion</label>
+                                 <label  class='control-label col-sm-1'>Communion</label>
                                  <div class="col-sm-8">
                                     <select class='form-control' id='#icommunion' name='communion' formControlName="communion" required>
                                         <option *ngFor='let _data of hymnsData' [value]='_data._id'> {{_data.name}} </option> 
@@ -109,7 +109,7 @@
                                </div>
 
                               <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Sending</label>
+                                 <label  class='control-label col-sm-1'>Sending</label>
                                  <div class="col-sm-8">
                                     <select class='form-control' id='#isending' name='sending' formControlName="sending" required>
                                         <option *ngFor='let _data of hymnsData' [value]='_data._id'> {{_data.name}} </option> 
@@ -118,7 +118,7 @@
                                </div>
 
                                <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Song Name/Song</label>
+                                 <label  class='control-label col-sm-1'>Song 5</label>
                                  <div class="col-sm-3">
                                     <input type='text' class='form-control' id='#iname1' name='name1' formControlName="name1" >
                                  </div>
@@ -130,7 +130,7 @@
                                  </div>
                                </div>
                               <div class="form-group">
-                                 <label  class='control-label col-sm-2'>Song 2 Name/Song</label>
+                                 <label  class='control-label col-sm-1'>Song 6</label>
                                  <div class="col-sm-3">
                                     <input type='text' class='form-control' id='#iname2' name='name2' formControlName="name2" >
                                  </div>
@@ -140,9 +140,23 @@
                                         <option *ngFor='let _data of hymnsData' [value]='_data._id'> {{_data.name}} </option> 
                                     </select>  
                                  </div>
+                              </div>
+                             <div>
+                                 <label  class='control-label col-sm-1'>Responsorial</label>
+                                 <div class="col-sm-6">
+                                    <input type='text' class='form-control' id='#responsorial' name='responsorial' formControlName="responsorial" >
+                                 </div>
+
+                                 <label  class='control-label col-sm-1'>Mailed</label>
+                                 <div class="col-sm-1">
+                                      <input  class='form-control' id='#imailed' name='mailed' formControlName="mailed" type="checkbox" disabled> 
+                                 </div>
+                              
+                               
+  
                                  <div style="float:right">
-                                   <input type="image" class='btn' (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png"/> &nbsp; &nbsp;
-                                   <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png"/>  &nbsp; &nbsp;
+                                   <input type="image" class='btn' (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png" title="Save"/> &nbsp; &nbsp;
+                                   <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png" title="Cancel"/>  &nbsp; &nbsp;
                                  </div>    
                                </div>
                              </form>  

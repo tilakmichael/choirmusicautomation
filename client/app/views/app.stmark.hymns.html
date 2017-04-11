@@ -3,10 +3,12 @@
         <table width="100%" border="0">
           <tr >
             <td>
-              <h4> <p> Choir Hymns  <input type="text"  [(ngModel)]='searchData' (ngModelChange)="filterData($event)"/>  </p> <p> {{error}} </p> </h4>
+              <h4> <p> Choir Hymns  
+                  <input type="text"  [(ngModel)]='searchData' (ngModelChange)="filterData($event)" placeholder="Search in Name"/>  
+                  </p> <p> {{error}} </p> </h4>
             </td>
             <td align="right"> 
-              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png"/>
+              <input type="image"  (click)='goHome()' [disabled]="editFlag"  src="app/image/backhome.png" title="Home"/>
             </td>
           </tr>
         </table>
@@ -21,7 +23,7 @@
                         <th>Song Sheet Link</th>
                         <th>Song Link</th>
                         <th>Patterrn</th>
-                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" /> </th>
+                        <th> <input type="image" class='btn' [disabled]="editFlag" (click)="addData()" value="Add" src="app/image/newb.png" title="Create" /> </th>
                  </thead>
                 <tbody> 
                     <tr *ngFor="let data of hymnsData ; let rowindex = index">
@@ -32,8 +34,8 @@
                         <td *ngIf='!editFlag || data._id !== editId'> {{data.song}}   </td>
                         <td *ngIf='!editFlag || data._id !== editId'> {{data.pattern}}   </td>
                         <td *ngIf='!editFlag || data._id !== editId'> 
-                            <input type="image" class='btn' height="24" weight="24"  (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png"/> &nbsp;&nbsp; 
-                            <input type="image" class='btn' height="24" weight="24"  (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png"/> 
+                            <input type="image" class='btn' height="24" weight="24"  (click)="editData(data._id,rowindex)"  [disabled]="editFlag" value="Edit"  src="app/image/edit.png" title="Edit"/> &nbsp;&nbsp; 
+                            <input type="image" class='btn' height="24" weight="24"  (click)="deleteData(data._id,rowindex)"  [disabled]="editFlag" value="Delete"  src="app/image/delete.png" title="Delete"/> 
                         </td>
 
                         <!-- EDIT ADD Data --> 
@@ -69,8 +71,8 @@
                                     <input type='text' class='form-control' id='#pattern' name='pattern' formControlName="pattern">
                                  </div>
                                  <div style="float:right">
-                                   <input type="image" (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png"/> &nbsp; &nbsp;
-                                   <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png"/>  &nbsp; &nbsp;
+                                   <input type="image" (click)="saveData(data._id, rowindex)"  [disabled]='!formDatas.valid || !formDatas.dirty'  src="app/image/saveb.png" title="Save"/> &nbsp; &nbsp;
+                                   <input type="image" (click)="cancelData(data._id, rowindex)"   src="app/image/cancelb.png" title="Cancel"/>  &nbsp; &nbsp;
                                  </div>    
                                </div>
                              </form>  
