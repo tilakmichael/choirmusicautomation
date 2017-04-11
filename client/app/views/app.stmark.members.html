@@ -43,7 +43,7 @@
                         </td>
                         <td *ngIf='!editFlag || data._id !== editId'> 
                               <select [ngModel]="data.choir" disabled>
-                                  <option *ngFor='let cg of choirData' [value]='cg._id' > {{cg.name}} </option>
+                                  <option *ngFor='let cg of choirData' [value]='cg._id' disabled > {{cg.name}} </option>
                              </select>    
                          </td>
                         <td *ngIf='!editFlag || data._id !== editId'> 

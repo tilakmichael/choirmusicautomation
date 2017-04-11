@@ -210,3 +210,13 @@ tr {
 .card > :last-child {
   margin-bottom: 0;
 }
+
+select:disabled {
+  background-color: transparent;
+    border: 0px solid;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+ }
+
+
+

@@ -9,11 +9,11 @@ declare var Auth0Lock: any;
 @Injectable()
 export class Auth {
   // Configure Auth0
-  public authkey:string = process.env.AUTH_KEY|| '3iBRZy3N2NguzPBFV3xb95IJgo2laYEZ'; 
-  public authdomain:string=process.env.AUTH_DOMAIN || 'tilakmichael.auth0.com' ;
+  public authkey:string = process.env.AUTH_KEY; 
+  public authdomain:string=process.env.AUTH_DOMAIN  ;
   lock = new Auth0Lock(this.authkey, this.authdomain, {});
 
-
+  
   constructor() {
       // Add callback for lock `authenticated` event
       //console.log('Mongo URL : ' +  config.mongo.url) ;
