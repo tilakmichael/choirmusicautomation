@@ -12,20 +12,26 @@ var http_1 = require("@angular/http");
 var core_1 = require("@angular/core");
 var Observable_1 = require("rxjs/Observable");
 var app_common_service_1 = require("../service/app.common.service");
+var angular2_jwt_1 = require("angular2-jwt");
 require("rxjs/add/operator/map");
 require("rxjs/add/operator/catch");
 //import 'rxjs/add/Observable/throw';
 var AppDataService = (function () {
-    function AppDataService(http, _common) {
+    function AppDataService(http, _common, authhttp) {
         this.http = http;
         this._common = _common;
+        this.authhttp = authhttp;
         this.data = [];
     }
     ;
     AppDataService.prototype.getData = function (table) {
         //console.log('calling rest get for table '+table ) ; 
+        //let token  = localStorage.getItem('id_token');
+        //console.log(token) ;
+        //let headers = new Headers({ 'Authorization': 'Bearer ' + token});
+        //let options = new RequestOptions({ headers: headers });
         var url = this.getUrl(table);
-        return this.http.get(url)
+        return this.authhttp.get(url)
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -39,7 +45,7 @@ var AppDataService = (function () {
         var url = this.getUrl(table);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.http.post(url, JSON.stringify(data), { headers: header })
+        return this.authhttp.post(url, JSON.stringify(data), { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -53,7 +59,7 @@ var AppDataService = (function () {
         var url = this.getUrl(table);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.http.put(url, JSON.stringify(data), { headers: header })
+        return this.authhttp.put(url, JSON.stringify(data), { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -68,7 +74,7 @@ var AppDataService = (function () {
         url = url + id;
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.http.delete(url)
+        return this.authhttp.delete(url)
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -84,7 +90,7 @@ var AppDataService = (function () {
         console.log('url ' + url);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.http.post(url, null, { headers: header })
+        return this.authhttp.post(url, null, { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -123,7 +129,7 @@ var AppDataService = (function () {
 }());
 AppDataService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http, app_common_service_1.AppCommonService])
+    __metadata("design:paramtypes", [http_1.Http, app_common_service_1.AppCommonService, angular2_jwt_1.AuthHttp])
 ], AppDataService);
 exports.AppDataService = AppDataService;
 //# sourceMappingURL=app.data.service.js.map

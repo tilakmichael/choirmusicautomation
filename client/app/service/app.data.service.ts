@@ -2,7 +2,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import { Injectable } from '@angular/core' ;
 import { Observable } from 'rxjs/Observable' ;
 import { AppCommonService} from '../service/app.common.service' ;
-
+import { AuthHttp} from 'angular2-jwt'
 import 'rxjs/add/operator/map' ;
 import 'rxjs/add/operator/catch' ;
 //import 'rxjs/add/Observable/throw';
@@ -11,14 +11,19 @@ import 'rxjs/add/operator/catch' ;
 
 @Injectable()
 export class AppDataService {
-    constructor(private http:Http , private _common: AppCommonService ) {};
+    constructor(private http:Http , private _common: AppCommonService, private authhttp:AuthHttp ) {};
     private data:any = []
 
 
     public getData(table:string) {
        //console.log('calling rest get for table '+table ) ; 
+        //let token  = localStorage.getItem('id_token');
+        //console.log(token) ;
+        //let headers = new Headers({ 'Authorization': 'Bearer ' + token});
+        //let options = new RequestOptions({ headers: headers });
+
        let url = this.getUrl(table) ; 
-       return this.http.get(url)
+       return this.authhttp.get(url)
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;
@@ -33,7 +38,7 @@ export class AppDataService {
        let url = this.getUrl(table) ; 
        var header = new Headers() ; 
        header.append('content-type', 'application/json') ; 
-       return this.http.post(url, JSON.stringify(data), {headers:header} )
+       return this.authhttp.post(url, JSON.stringify(data), {headers:header} )
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;
@@ -47,7 +52,7 @@ export class AppDataService {
        let url = this.getUrl(table) ; 
        var header = new Headers() ; 
        header.append('content-type', 'application/json') ; 
-       return this.http.put(url, JSON.stringify(data), {headers:header} )
+       return this.authhttp.put(url, JSON.stringify(data), {headers:header} )
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;
@@ -64,7 +69,7 @@ export class AppDataService {
        url = url+id ; 
        var header = new Headers() ; 
        header.append('content-type', 'application/json') ; 
-       return this.http.delete(url )
+       return this.authhttp.delete(url )
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;
@@ -81,7 +86,7 @@ export class AppDataService {
        console.log('url ' +url ) ; 
        var header = new Headers() ; 
        header.append('content-type', 'application/json') ; 
-       return this.http.post(url, null, {headers:header} )
+       return this.authhttp.post(url, null, {headers:header} )
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;

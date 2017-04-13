@@ -1,4 +1,5 @@
 var express = require('express') ; 
+var jwt     = require('express-jwt');
 var router = express.Router() ;
 var mongojs = require('mongojs');
 var sysconfig = require('../config.js')
@@ -7,6 +8,15 @@ var conString = process.env.PROD_MONGODB|| sysconfig.mongo.url ;
 var db    = mongojs(conString ,['groups','members', 'hymns','schedule']) ;
 var apik  = sysconfig.mailgun.key ;
 var apid  = sysconfig.mailgun.domain ;      
+
+
+
+var jwtCheck = jwt({
+  secret:  sysconfig.auth0.secret , 
+  audience: sysconfig.auth0.client  
+});
+
+
 // process mail
 function processMail(id) {
    //find schedule 
@@ -184,7 +194,9 @@ function processMail(id) {
 // get all data of from a table
 
 function findDatas(req , resp , next, dbtable, sort){
-    //console.log( 'rest for getting ' ) ; 
+    //console.log( 'rest for getting ' ) ;
+
+    //console.log( localStorage.getItem('id_token') ); 
     if (sort){
        dbtable.find().sort(sort, function(err, data) {
         if (err){
@@ -258,16 +270,17 @@ function deleteData(req , resp , next, dbtable) {
 
 // **********  Groups ***********************
 // get all data from groups
-router.get('/stm/mlab/groups', function(req,resp, next){
+//router.get('/stm/mlab/groups', jwtCheck);
+router.get('/stm/mlab/groups',jwtCheck, function(req,resp, next){
       findDatas(req,resp, next, db.groups);
 } ) ;
 // get one row from groups
-router.get('/stm/mlab/groups/:id', function(req,resp, next){
+router.get('/stm/mlab/groups/:id', jwtCheck, function(req,resp, next){
       findOne(req,resp, next, db.groups);
 } ) ;
 
 // add doc for groups
-router.post('/stm/mlab/groups', function(req,resp, next) {
+router.post('/stm/mlab/groups', jwtCheck, function(req,resp, next) {
    // console.log('rest create');
    var doc = req.body  ; 
    if  (doc.name) {
@@ -279,7 +292,7 @@ router.post('/stm/mlab/groups', function(req,resp, next) {
    }
 }) ; 
 // update groups
-router.put('/stm/mlab/groups', function(req,resp, next) {
+router.put('/stm/mlab/groups', jwtCheck, function(req,resp, next) {
    // console.log('rest update'); 
    var doc = req.body  ; 
    let id  = doc._id ;
@@ -289,22 +302,22 @@ router.put('/stm/mlab/groups', function(req,resp, next) {
 }) ; 
 
 // delete groups
-router.delete('/stm/mlab/groups/:id', function(req,resp, next) {
+router.delete('/stm/mlab/groups/:id',jwtCheck,  function(req,resp, next) {
    deleteData(req , resp , next, db.groups  ) ;
 }) ; 
 
 // **********  member ***********************
 // get all data from memeber
-router.get('/stm/mlab/members', function(req,resp, next){
+router.get('/stm/mlab/members', jwtCheck,function(req,resp, next){
       findDatas(req,resp, next, db.members , {fname: 1} );
 } ) ;
 // get one row from member
-router.get('/stm/mlab/members/:id', function(req,resp, next){
+router.get('/stm/mlab/members/:id',jwtCheck, function(req,resp, next){
       findOne(req,resp, next, db.members);
 } ) ;
 
 // add doc for memebers
-router.post('/stm/mlab/members', function(req,resp, next) {
+router.post('/stm/mlab/members',jwtCheck, function(req,resp, next) {
     console.log('rest create');
    var doc = req.body  ; 
    if  (doc.fname) {
@@ -317,7 +330,7 @@ router.post('/stm/mlab/members', function(req,resp, next) {
 }) ; 
 
 // delete memebers
-router.put('/stm/mlab/members', function(req,resp, next) {
+router.put('/stm/mlab/members',jwtCheck, function(req,resp, next) {
    // console.log('rest update'); 
    var doc = req.body  ; 
    let id  = doc._id ;
@@ -327,14 +340,14 @@ router.put('/stm/mlab/members', function(req,resp, next) {
 }) ; 
 
 // delete memebers
-router.delete('/stm/mlab/members/:id', function(req,resp, next) {
+router.delete('/stm/mlab/members/:id', jwtCheck,function(req,resp, next) {
    deleteData(req , resp , next, db.members  ) ;
 }) ; 
 
 
 // **********  hymns ***********************
 // get all data from hymns
-router.get('/stm/mlab/hymns', function(req,resp, next){
+router.get('/stm/mlab/hymns',jwtCheck, function(req,resp, next){
       findDatas(req,resp, next, db.hymns, {name:1});
 } ) ;
 // get one row from hymns
@@ -343,7 +356,7 @@ router.get('/stm/mlab/hymns/:id', function(req,resp, next){
 } ) ;
 
 // add doc for hymns
-router.post('/stm/mlab/hymns', function(req,resp, next) {
+router.post('/stm/mlab/hymns', jwtCheck,function(req,resp, next) {
     console.log('rest create');
    var doc = req.body  ; 
    if  (doc.name) {
@@ -356,7 +369,7 @@ router.post('/stm/mlab/hymns', function(req,resp, next) {
 }) ; 
 
 // delete hymns
-router.put('/stm/mlab/hymns', function(req,resp, next) {
+router.put('/stm/mlab/hymns', jwtCheck,function(req,resp, next) {
    // console.log('rest update'); 
    var doc = req.body  ; 
    let id  = doc._id ;
@@ -366,23 +379,23 @@ router.put('/stm/mlab/hymns', function(req,resp, next) {
 }) ; 
 
 // delete hymns
-router.delete('/stm/mlab/hymns/:id', function(req,resp, next) {
+router.delete('/stm/mlab/hymns/:id', jwtCheck,function(req,resp, next) {
    deleteData(req , resp , next, db.hymns  ) ;
 }) ; 
 
 
 // **********  schedule ***********************
 // get all data from schedule
-router.get('/stm/mlab/schedule', function(req,resp, next){
+router.get('/stm/mlab/schedule',jwtCheck, function(req,resp, next){
       findDatas(req,resp, next, db.schedule, {date:-1});
 } ) ;
 // get one row from hymns
-router.get('/stm/mlab/hymns/:id', function(req,resp, next){
+router.get('/stm/mlab/hymns/:id',jwtCheck, function(req,resp, next){
       findOne(req,resp, next, db.schedule);
 } ) ;
 
 // add doc for schedule
-router.post('/stm/mlab/schedule', function(req,resp, next) {
+router.post('/stm/mlab/schedule',jwtCheck, function(req,resp, next) {
     console.log('rest create');
    var doc = req.body  ; 
    if  (doc.name) {
@@ -395,7 +408,7 @@ router.post('/stm/mlab/schedule', function(req,resp, next) {
 }) ; 
 
 // delete schedule
-router.put('/stm/mlab/schedule', function(req,resp, next) {
+router.put('/stm/mlab/schedule', jwtCheck,function(req,resp, next) {
    //console.log('rest update'); 
    var doc = req.body  ; 
    let id  = doc._id ;
@@ -405,14 +418,14 @@ router.put('/stm/mlab/schedule', function(req,resp, next) {
 }) ; 
 
 // delete schedule
-router.delete('/stm/mlab/schedule/:id', function(req,resp, next) {
+router.delete('/stm/mlab/schedule/:id',jwtCheck, function(req,resp, next) {
    deleteData(req , resp , next, db.schedule  ) ;
 }) ; 
 
 
 // Mail
 // delete schedule
-router.post('/stm/mlab/email/:id', function(req,resp, next) {
+router.post('/stm/mlab/email/:id', jwtCheck,function(req,resp, next) {
    console.log('rest for mailing'); 
    let id  = req.params.id ;
    console.log('id ' + id); 

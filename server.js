@@ -1,4 +1,6 @@
 var express = require("express") ;
+var cors   = require("express") ;
+
 var path = require("path") ;
 var bodyparser = require("body-parser") ;
 //var mysql  = require("mysql") ; 
@@ -16,7 +18,7 @@ var tasks = require("./routes/tasks") ;
 
 var app = express() ;
 var port = process.env.PORT || 3000 ; 
-
+app.use(cors()) ;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs" );
 app.engine("html", require("ejs").renderFile);
