@@ -13,7 +13,6 @@ export class Auth {
   public authdomain:string=process.env.AUTH_DOMAIN  ;
   lock = new Auth0Lock(this.authkey, this.authdomain, {});
 
-
   constructor() {
       // Add callback for lock `authenticated` event
       //console.log('Mongo URL : ' +  config.mongo.url) ;

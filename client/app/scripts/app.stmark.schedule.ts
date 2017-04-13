@@ -142,7 +142,7 @@ public deleteData(id:string, index:number){
 } ;
 
 public saveData(id:string, index:number){
-    //console.log('Save ', id , index );
+    console.log('Save ', id , index );
     
     let data =  this.formDatas.value ; 
     if (id == '-1') {
@@ -163,7 +163,7 @@ public saveData(id:string, index:number){
       //console.log('update ', data.fname );
       
       this._data.editData(this.table, data).subscribe( _data => { 
-          //console.log(_data) ; 
+          console.log(_data) ; 
           this.schData[index] = data ;
           let success = this._common.findUpdate(this.alldata, '_id=="'+id+'"', data) ;
           if (!success) {

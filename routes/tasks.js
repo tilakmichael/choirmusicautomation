@@ -109,7 +109,7 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = 'Enterance  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/>'; 
+                                   mailMsg = '<br/><br/><br/> '+ 'Enterance  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>'; 
                                 } else {
                                    mailMsg = 'Enterance  : ' +   hymnData[0].name +'n/' ;
                                 }
@@ -122,7 +122,7 @@ function processMail(id) {
                                // console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Offertory  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>'  +' <br/>';
+                                   mailMsg = mailMsg +'Offertory  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>'  +' <br/><br/>';
                                 } else {
                                    mailMsg = mailMsg+'Offertory  : ' +   hymnData[0].name  ;
                                 }
@@ -134,7 +134,7 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Communion  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/>' ; 
+                                   mailMsg = mailMsg +'Communion  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>' ; 
                                 } else {
                                    mailMsg = mailMsg+'Communion  : ' +   hymnData[0].name  ;
                                 }
@@ -145,13 +145,40 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Sending  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/>';  
+                                   mailMsg = mailMsg +'Sending Forth : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +'<br/> <br/>';  
                                 } else {
-                                   mailMsg = mailMsg+'Sending  : ' +   hymnData[0].name  ;
+                                   mailMsg = mailMsg+'Sending Forth : ' +   hymnData[0].name  ;
+                                }
+                        }
+                       if (schData.song1) {
+                                hymnData = data3.filter( _data5 => _data5._id == schData.song1 ) ;
+                                //console.log(hymnData);
+                                //console.log('hymn ss ' + hymnData[0].songsheet);
+                                
+                                if (hymnData[0].songsheet) {
+                                   mailMsg = mailMsg + schData.name1 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>';  
+                                } else {
+                                   mailMsg = mailMsg+schData.name1 +' : '+   hymnData[0].name  ;
                                 }
                         }
 
-                        
+                       if (schData.song2) {
+                                hymnData = data3.filter( _data6 => _data6._id == schData.song2 ) ;
+                                //console.log(hymnData);
+                                //console.log('hymn ss ' + hymnData[0].songsheet);
+                                
+                                if (hymnData[0].songsheet) {
+                                   mailMsg = mailMsg + schData.name2 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>';  
+                                } else {
+                                   mailMsg = mailMsg+schData.name2 +' : '+   hymnData[0].name  ;
+                                }
+                        }
+
+                        if (schData.responsorial) {
+                            mailMsg = mailMsg + 'Responsorial : ' + '<a href="'+ schData.responsorial +  '">' + schData.name +'</a>' +'<br/><br/><br/> <br/><br/>';  
+                         }
+                         mailMsg = mailMsg + '<p> Plese note that this mail is generated from an automated system and it is still in testing mode  </p>' ; 
+                         
 
                        mailTo ='tilakmichael@gmail.com, tilakmichael@hotmail.com';
                         // mail data

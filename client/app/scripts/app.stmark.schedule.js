@@ -119,8 +119,8 @@ var AppSch = (function () {
     };
     ;
     AppSch.prototype.saveData = function (id, index) {
-        //console.log('Save ', id , index );
         var _this = this;
+        console.log('Save ', id, index);
         var data = this.formDatas.value;
         if (id == '-1') {
             //console.log('insert ', data.fname );
@@ -137,7 +137,7 @@ var AppSch = (function () {
         else {
             //console.log('update ', data.fname );
             this._data.editData(this.table, data).subscribe(function (_data) {
-                //console.log(_data) ; 
+                console.log(_data);
                 _this.schData[index] = data;
                 var success = _this._common.findUpdate(_this.alldata, '_id=="' + id + '"', data);
                 if (!success) {
