@@ -24,21 +24,29 @@ export class AppMembers implements OnInit{
     public formDatas:FormGroup ; 
     public editFlag:boolean = false ;
     public editId:string = undefined ;
-    public emptyData= {"_id":"-1","fname": "","lname": "","email": "", "phone": "", "dob":"", "admin": "",  "active": "true",   "trait": "" , "choir": "","resp":"", "demo":""} ;
+    public emptyData= {"_id":"-1","fname": "","lname": "","email": "", "phone": "", "dob":"", "admin": "",  "active": "true",   "trait": "" , "choir": "","resp":"", "demo":false} ;
     public pager:any = {};
     public searchData:string ;
+    public demo:string ; 
 
     constructor(private _common:AppCommonService, private _data:AppDataService, private _bldr:FormBuilder ){} ; 
     ngOnInit() {
           this.choir = this._common.getChoir() ; 
-          console.log('choir ' + this.choir) ;
-
+          //console.log('choir ' + this.choir) ;
+          this.demo = this._common.getdemo() ;
           if (!this.choir) {
-              console.log('caalling profile ') ; 
+              //console.log('caalling profile ') ; 
              this._data.setProfile() ;
              this.choir = this._common.getChoir() ;
              console.log('choir ' + this.choir) ;
+             let profile = JSON.parse( localStorage.getItem('profile' ) ) ;
+             if (profile.demo) {
+                this.demo = profile.demo ;
+             }else {
+                this.demo = 'N' ;
+             }   
           }
+                  
           
          //console.log('Data ') ; 
          this._data.getData(this.table).subscribe(data => {

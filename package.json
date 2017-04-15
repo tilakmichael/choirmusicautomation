@@ -17,9 +17,12 @@
     "express": "",
     "express-jwt": "^5.1.0",
     "express-myconnection": "",
+    "install": "^0.8.8",
     "mailgun-js": "^0.9.1",
     "mongojs": "~2.4.0",
     "morgan": "",
+    "node-schedule": "^1.2.1",
+    "npm": "^4.5.0",
     "serve-favicon": ""
   },
   "devDependencies": {

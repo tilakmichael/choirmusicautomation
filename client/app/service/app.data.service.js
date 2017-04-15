@@ -31,7 +31,8 @@ var AppDataService = (function () {
         //let headers = new Headers({ 'Authorization': 'Bearer ' + token});
         //let options = new RequestOptions({ headers: headers });
         var url = this.getUrl(table);
-        return this.authhttp.get(url)
+        //return this.authhttp.get(url)
+        return this.http.get(url)
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -41,11 +42,16 @@ var AppDataService = (function () {
     };
     ;
     AppDataService.prototype.addData = function (table, data) {
+        if (this._common.getdemo() == 'Y') {
+            alert('This operation is not allowed for this user!');
+            return;
+        }
         //console.log('calling rest for adding table '+table ) ; 
         var url = this.getUrl(table);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.authhttp.post(url, JSON.stringify(data), { headers: header })
+        //return this.authhttp.post(url, JSON.stringify(data), {headers:header} )
+        return this.http.post(url, JSON.stringify(data), { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -55,11 +61,16 @@ var AppDataService = (function () {
     };
     ;
     AppDataService.prototype.editData = function (table, data) {
+        if (this._common.getdemo() == 'Y') {
+            alert('This operation is not allowed for this user!');
+            return;
+        }
         //console.log('calling rest for updating for table '+table ) ; 
         var url = this.getUrl(table);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.authhttp.put(url, JSON.stringify(data), { headers: header })
+        //return this.authhttp.put(url, JSON.stringify(data), {headers:header} )
+        return this.http.put(url, JSON.stringify(data), { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -69,12 +80,17 @@ var AppDataService = (function () {
     };
     ;
     AppDataService.prototype.deleteData = function (table, id) {
+        if (this._common.getdemo() == 'Y') {
+            alert('This operation is not allowed for this user!');
+            return;
+        }
         //console.log('calling rest delete for table '+table ) ;
         var url = this.getUrl(table);
         url = url + id;
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.authhttp.delete(url)
+        //return this.authhttp.delete(url )
+        return this.http.delete(url)
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);
@@ -84,6 +100,11 @@ var AppDataService = (function () {
     };
     ;
     AppDataService.prototype.mailData = function (id) {
+        if (this._common.getdemo() == 'Y') {
+            alert('This operation is not allowed for this user!');
+            console.log(this._common.getdemo());
+            return;
+        }
         console.log('calling mail ' + id);
         var url = this.getUrl('email');
         url = url + id;
@@ -116,7 +137,7 @@ var AppDataService = (function () {
             if (memberData.length >= 0) {
                 _this._common.setChoir(memberData[0].choir);
                 _this._common.setadmin(memberData[0].admin);
-                _this._common.setdemo((memberData[0].demo ? 'Y' : null));
+                _this._common.setdemo((memberData[0].demo ? 'Y' : 'N'));
                 profile.choir = memberData[0].choir;
                 profile.admin = memberData[0].admin;
                 profile.demo = (memberData[0].demo ? 'Y' : profile.demo);

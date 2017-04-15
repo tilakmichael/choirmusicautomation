@@ -28,7 +28,10 @@ var AppHome = (function () {
             this.pict = this.profile['picture'];
             var choir = this._common.getChoir();
             if (!choir) {
-                this._data.setProfile();
+                if (this._auth.authenticated()) {
+                }
+                else {
+                }
             }
             else {
                 this.groupName = choir;

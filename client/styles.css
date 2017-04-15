@@ -55,10 +55,15 @@ li.dropdown:hover > .dropdown-menu {
 
 div.container > div > table > tbody 
 {
-font-size:10pt;
+font-size:9pt;
 font-family:times new roman;
 }
  
+div.container > div > table > tr 
+{
+font-size:10pt;
+
+}
 
 #cpBtn{
 	position: fixed;
@@ -171,9 +176,8 @@ input.btn:enabled {
 
 
 tr {
-   line-height: 25px;
-   min-height: 25px;
-   height: 25px;
+   min-height: 20px;
+   height: 20px;
 }
 
 .hscontainer {

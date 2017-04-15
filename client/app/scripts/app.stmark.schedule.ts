@@ -25,7 +25,7 @@ export class AppSch implements OnInit{
     public formDatas:FormGroup ; 
     public editFlag:boolean = false ;
     public editId:string = undefined ;
-    public emptyData= {"_id":"-1","date":"","name":"","enterance":"","offertory":"","communion":"","sending":"","name1":"","song1":"","name2":"","song2":"","name3":"","song3":"","responsorial":"","mailed":"N","mailedt":"","choir":""} ;
+    public emptyData= {"_id":"-1","date":"","name":"","enterance":"","offertory":"","communion":"","sending":"","name1":"","song1":"","name2":"","song2":"","name3":"","song3":"","responsorial":"","mailed":false,"mailedt":"","choir":""} ;
     public pager:any = {};
     public searchName:string ;
     public searchDate:string ;
@@ -90,7 +90,7 @@ private initData(editFlag:Boolean , index:number){
     if (editFlag) {
        //let data =   this._bldr.group( this.schData[index] ) ;
         let data =    this.schData[index]  ;
-        data['mailed']  = 'N' ;
+        data['mailed']  = false ;
        this.formDatas   = this._bldr.group( data ) ; 
        this.editId      = this.schData[index]._id  ; 
        this.editFlag    = true ;
@@ -234,7 +234,7 @@ public mailData(id:string, index:number) {
       console.log('sucess ' + sucees) ;
       if (sucees) {
         
-        data['mailed'] = 'Y' ;  
+        data['mailed'] = true ;  
         this.formDatas = this._bldr.group( data ) ; ; 
         this.saveData(id, index) ;
       }

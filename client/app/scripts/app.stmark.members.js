@@ -25,19 +25,27 @@ var AppMembers = (function () {
         this.table = 'members';
         this.editFlag = false;
         this.editId = undefined;
-        this.emptyData = { "_id": "-1", "fname": "", "lname": "", "email": "", "phone": "", "dob": "", "admin": "", "active": "true", "trait": "", "choir": "", "resp": "", "demo": "" };
+        this.emptyData = { "_id": "-1", "fname": "", "lname": "", "email": "", "phone": "", "dob": "", "admin": "", "active": "true", "trait": "", "choir": "", "resp": "", "demo": false };
         this.pager = {};
     }
     ;
     AppMembers.prototype.ngOnInit = function () {
         var _this = this;
         this.choir = this._common.getChoir();
-        console.log('choir ' + this.choir);
+        //console.log('choir ' + this.choir) ;
+        this.demo = this._common.getdemo();
         if (!this.choir) {
-            console.log('caalling profile ');
+            //console.log('caalling profile ') ; 
             this._data.setProfile();
             this.choir = this._common.getChoir();
             console.log('choir ' + this.choir);
+            var profile = JSON.parse(localStorage.getItem('profile'));
+            if (profile.demo) {
+                this.demo = profile.demo;
+            }
+            else {
+                this.demo = 'N';
+            }
         }
         //console.log('Data ') ; 
         this._data.getData(this.table).subscribe(function (data) {

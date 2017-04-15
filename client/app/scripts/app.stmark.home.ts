@@ -29,8 +29,12 @@ export class AppHome implements OnInit{
 
            let choir = this._common.getChoir() ;
            if (!choir) {
-              this._data.setProfile() ;
-
+              if ( this._auth.authenticated() ) {
+                  //console.log('authenticated for profile') 
+                 //this._data.setProfile() ;
+              }   else {
+                 //console.log('not authenticated') 
+              }
            }else {
                this.groupName = choir ; 
            }

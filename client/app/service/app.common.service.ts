@@ -12,7 +12,7 @@ export class AppCommonService {
    private admin:string ; 
    private choirMaster:string ; 
    private choir:string   ; 
-   private demo:String 
+   private demo:string 
 
    private doc = {} ;  
 
@@ -156,6 +156,13 @@ public findDuplicate(doc:any, filter:string, id:string ){
   } ;
 
   public getdemo(){
+     if (!this.demo){
+         let profile        = JSON.parse( localStorage.getItem('profile' ) ) ;
+         this.demo = 'N';
+         if (profile.demo) {
+            this.demo = (profile.demo == 'Y' ? 'Y':'N') ;
+          }   
+     }
     return this.demo ;    
   } ;
 

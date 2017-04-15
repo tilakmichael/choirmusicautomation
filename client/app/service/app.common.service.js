@@ -134,6 +134,13 @@ var AppCommonService = (function () {
     };
     ;
     AppCommonService.prototype.getdemo = function () {
+        if (!this.demo) {
+            var profile = JSON.parse(localStorage.getItem('profile'));
+            this.demo = 'N';
+            if (profile.demo) {
+                this.demo = (profile.demo == 'Y' ? 'Y' : 'N');
+            }
+        }
         return this.demo;
     };
     ;

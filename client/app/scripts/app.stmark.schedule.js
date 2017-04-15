@@ -26,7 +26,7 @@ var AppSch = (function () {
         this.table = 'schedule';
         this.editFlag = false;
         this.editId = undefined;
-        this.emptyData = { "_id": "-1", "date": "", "name": "", "enterance": "", "offertory": "", "communion": "", "sending": "", "name1": "", "song1": "", "name2": "", "song2": "", "name3": "", "song3": "", "responsorial": "", "mailed": "N", "mailedt": "", "choir": "" };
+        this.emptyData = { "_id": "-1", "date": "", "name": "", "enterance": "", "offertory": "", "communion": "", "sending": "", "name1": "", "song1": "", "name2": "", "song2": "", "name3": "", "song3": "", "responsorial": "", "mailed": false, "mailedt": "", "choir": "" };
         this.pager = {};
     }
     ;
@@ -71,7 +71,7 @@ var AppSch = (function () {
         if (editFlag) {
             //let data =   this._bldr.group( this.schData[index] ) ;
             var data = this.schData[index];
-            data['mailed'] = 'N';
+            data['mailed'] = false;
             this.formDatas = this._bldr.group(data);
             this.editId = this.schData[index]._id;
             this.editFlag = true;
@@ -194,7 +194,7 @@ var AppSch = (function () {
             sucees = _data['success'];
             console.log('sucess ' + sucees);
             if (sucees) {
-                data['mailed'] = 'Y';
+                data['mailed'] = true;
                 _this.formDatas = _this._bldr.group(data);
                 ;
                 _this.saveData(id, index);
