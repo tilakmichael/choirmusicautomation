@@ -11,19 +11,11 @@ var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 var common_1 = require("@angular/common");
-//import {ModalModule} from 'ng2-bootstrap' ; 
-//import { BootstrapModalModule } from 'ng2-bootstrap-modal';
-//import {AppCommonService } from './service/app.common.service' ;
-//import { AppDataService } from './service/app.data.service' ;  
 var app_component_1 = require("./app.component");
 var app_routers_1 = require("./scripts/app.routers");
 var app_auth_service_1 = require("./service/app.auth.service");
 var app_auth_guard_1 = require("./service/app.auth.guard");
 var app_stmark_home_1 = require("./scripts/app.stmark.home");
-//import { AppAccSlBook} from './scripts/app.acc.slbook' ; 
-//import { AppAccBook} from './scripts/app.acc.book' ; 
-//import { AppAccSl} from './scripts/app.acc.sl' ; 
-//import {AppAccTypeCrud} from './scripts/app.acc.type.crud' ;
 var AppModule = (function () {
     function AppModule() {
     }

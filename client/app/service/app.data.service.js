@@ -111,7 +111,8 @@ var AppDataService = (function () {
         console.log('url ' + url);
         var header = new http_1.Headers();
         header.append('content-type', 'application/json');
-        return this.authhttp.post(url, null, { headers: header })
+        //       return this.authhttp.post(url, null, {headers:header} )
+        return this.http.post(url, null, { headers: header })
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             console.error(error);

@@ -175,10 +175,6 @@ input.btn:enabled {
 }
 
 
-tr {
-   min-height: 20px;
-   height: 20px;
-}
 
 .hscontainer {
     width: 30em;
@@ -226,4 +222,6 @@ select:disabled {
     opacity: 1.2;
 	
  }
-
+.redColor{
+  color:red
+}

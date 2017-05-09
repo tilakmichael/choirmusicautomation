@@ -26,6 +26,7 @@
     "browser-sync-client": "^2.4.5",
     "browser-sync-ui": "^0.6.3",
     "core-js": "^2.4.1",
+    "ng2-bootstrap-modal": "^1.0.1",
     "reflect-metadata": "",
     "rxjs": "5.0.1",
     "systemjs": "0.19.40",

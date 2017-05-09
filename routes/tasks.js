@@ -7,9 +7,10 @@ var sysconfig = require('../config.js')
 var conString = process.env.PROD_MONGODB|| sysconfig.mongo.url ;
 var db    = mongojs(conString ,['groups','members', 'hymns','schedule']) ;
 var apik  = sysconfig.mailgun.key ;
-var apid  = sysconfig.mailgun.domain ;    
+var apid  = sysconfig.mailgun.domain ;
+var fromMail =  sysconfig.mailgun.email ;   
 var schedule = require('node-schedule');  
-
+var speaker ='?ui=2&amp;ik=845974a1fe&amp;view=fimg&amp;th=15b78f8be2c23dbd&amp;attid=0.1&amp;disp=emb&amp;realattid=ii_15b78f803278e693&amp;attbid=ANGjdJ8ScKk-hu1BdrmNjPhpSsU6ye6hsxYCCjsL2TfGZ1XFvd2_1c-p8xagwQdhGIYiZjQNWtyJzLwqgRGfmheUMxFrFUZUcU3hy8nCqyi_DDsL0qkWy_U_Ny_ETuo&amp;sz=w30-h30&amp;ats=1492383226383&amp;rm=15b78f8be2c23dbd&amp;zw&amp;atsh=1' ;
 
 
 var jwtCheck = jwt({
@@ -17,12 +18,12 @@ var jwtCheck = jwt({
   audience: sysconfig.auth0.client  
 });
 
-// core job on sunday, 5 clock , 0 mnt , 0 sec 
+// core job on sunday, 4 clock , 0 mnt , 0 sec 
 
 var j = schedule.scheduleJob('0 0 5 * * 0', function(){
   //var date = new Date() ;   
   console.log('crone job tesitng !' );
-  //scheduleMail() ;
+  scheduleMail() ;
 
 });
 
@@ -88,6 +89,11 @@ function processMail(id) {
 
    var mailgun = require('mailgun-js')({apiKey: apik , domain: apid});
    var schData     ;
+   var bMonth      ;
+   var tMonth      ;
+   var bDate       ;
+   var bDay        ;
+   var tDay        ;
    var memData     ;
    var hymnData    ;
    var mailMsg     ;
@@ -95,49 +101,10 @@ function processMail(id) {
    var MailFrom    ;
    var mailhdr     ;
    var choirGroup  ;
+   var bDayPerson  ;
 
    
 
-/*
-           var mailcomposer = require('mailcomposer');
-            
-            var mail = mailcomposer({
-                    from: 'you@samples.mailgun.org',
-                    to: 'mm@samples.mailgun.org',
-                    subject: 'Test email subject',
-                    text: 'Test email text',
-                    html: '<b> Test email text </b>'
-            });
-            
-            mail.build(function(mailBuildError, message) {
-            
-                var dataToSend = {
-                    to: 'mm@samples.mailgun.org',
-                    message: message.toString('ascii')
-                };
-            
-                mailgun.messages().sendMime(dataToSend, function (sendError, body) {
-                    if (sendError) {
-                        console.log(sendError);
-                        return;
-                    }
-                });
-            });
-
-*/
-//    var data = {
-//       from: 'St Mark Choir <stmark1130choir@gmail.com>',
-//       to: 'tilakmichael@gmail.com',
-//       subject: 'Hello',
-//        text: 'Testing some Mailgun awesomness!'   
-//    };
- 
-//    mailgun.messages().send(data, function (error, body) {
-//        console.log(body);
-//    });
-
-     //console.log('processing mail') ;
-     
      db.schedule.findOne({_id: mongojs.ObjectId(id)} , function(err, data) {
        if (err){
           schData = null ;
@@ -145,34 +112,57 @@ function processMail(id) {
           //console.log('schedule data') ;  
           //console.log(data) ;       
           schData = data;
+          bMonth = data.date.substring(5,7) ;
+          bDate   = data.date.substring(8,10);
+          bDay    = parseInt(bDate);
+          
+          let date= new Date(data.date);
+          date.setDate(date.getDate() + 6);
+          
+          tDay      =  JSON.stringify(date).substring(9,11);
+          tMonth    =  JSON.stringify(date).substring(6,8); 
+          
           mailhdr = schData.date + ' '+schData.name ;
           //console.log(schData) ;
+
+          //console.log('b date ' + bMonth + ' / ' + bDay +' / '+tMonth+' / '+ tDay ) ;
+
           db.members.find( function(err, data2) {
              if (err){
                  
              }else {
                  //console.log(schData.choir);
-                 memData = data2.filter( _data2 => _data2.choir == schData.choir ) ;
+                 memData = data2.filter( _data2 => _data2.choir == schData.choir && _data2.active=='true' ) ;
                  mailTo  = memData.map( function(obj){
                      return obj.email ;
                  }).join(', ');
-                 // console.log(' mail to :' + mailTo);    
+                 //console.log(' mail to :' + mailTo);
+
+                 bDyData =  data2.filter( _data2 =>  {   
+                     //console.log(_data2.dob.substring(5,7) +' / '+ _data2.dob.substring(8,10) ) ;               
+                     let retvar = (_data2.choir == schData.choir && (_data2.dob && _data2.dob.substring(5,7) >= bMonth && _data2.dob.substring(5,7) <= tMonth && _data2.dob.substring(8,10) >= bDay && _data2.dob.substring(8,10) <= tDay ));
+                     //console.log(retvar);
+                     return retvar ;  
+                  } ) ;    
+                 //console.log(bDyData) ;
+                 bDayPerson = bDyData.map(function(obj){return obj.fname+' '+obj.lname ;}).join(', ');
+                 //console.log('bday person : '+bDayPerson) ;
+
                  // get songs 
                  db.hymns.find( function(err, data3) {
                  if (err){
                  }else {
-                        //hymnData = data3.filter( _data3 => _data3.choir == schData.choir ) ;
-                        //hymnData = data3 ;
-                        //console.log(data3);
                         if (schData.enterance) {
                                 hymnData = data3.filter( _data4 => _data4._id == schData.enterance ) ;
-                                //console.log(hymnData);
-                                //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = '<br/><br/><br/> '+ 'Enterance  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>'; 
+                                   mailMsg = '<br/><br/><br/> '+ 'Entrance  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' ;
+                                   if (hymnData[0].song) {
+                                      mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' + '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
                                 } else {
-                                   mailMsg = 'Enterance  : ' +   hymnData[0].name +'n/' ;
+                                   mailMsg = 'Entrance  : ' +   hymnData[0].name +'n/' ;
                                 }
 
                         }
@@ -183,8 +173,14 @@ function processMail(id) {
                                // console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Offertory  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>'  +' <br/><br/>';
-                                } else {
+                                   mailMsg = mailMsg +'Offertory  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' ;
+                                if (hymnData[0].song) {
+                                      mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' +  '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
+      
+                             } else {
                                    mailMsg = mailMsg+'Offertory  : ' +   hymnData[0].name  ;
                                 }
                         }
@@ -195,7 +191,12 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Communion  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>' ; 
+                                   mailMsg = mailMsg +'Communion  : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' ;
+                                  if (hymnData[0].song) {
+                                       mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' +  '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
+   
                                 } else {
                                    mailMsg = mailMsg+'Communion  : ' +   hymnData[0].name  ;
                                 }
@@ -206,8 +207,14 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg +'Sending Forth : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +'<br/> <br/>';  
-                                } else {
+                                   mailMsg = mailMsg +'Sending Forth : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' ;  
+                                  if (hymnData[0].song) {
+                                      mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' +  '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
+     
+                              } else {
                                    mailMsg = mailMsg+'Sending Forth : ' +   hymnData[0].name  ;
                                 }
                         }
@@ -217,7 +224,13 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg + schData.name1 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>';  
+                                   mailMsg = mailMsg + schData.name1 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' ;
+                                   if (hymnData[0].song) {
+                                      mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' +  '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
+          
                                 } else {
                                    mailMsg = mailMsg+schData.name1 +' : '+   hymnData[0].name  ;
                                 }
@@ -229,29 +242,39 @@ function processMail(id) {
                                 //console.log('hymn ss ' + hymnData[0].songsheet);
                                 
                                 if (hymnData[0].songsheet) {
-                                   mailMsg = mailMsg + schData.name2 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>' +' <br/><br/>';  
+                                   mailMsg = mailMsg + schData.name2 +' : ' + '<a href="'+ hymnData[0].songsheet +  '">' + hymnData[0].name +'</a>';
+                                  if (hymnData[0].song) {
+                                      mailMsg = mailMsg +  '&nbsp; &nbsp;  <a href="'+ hymnData[0].song+'">' +  '<img border="0"  src="'+speaker+'" width="15" height="15" class="CToWUd"></a>' ;
+                                   }
+                                   mailMsg = mailMsg + ' <br/><br/>'; 
                                 } else {
                                    mailMsg = mailMsg+schData.name2 +' : '+   hymnData[0].name  ;
                                 }
                         }
-
                         if (schData.responsorial) {
                             mailMsg = mailMsg + 'Responsorial : ' + '<a href="'+ schData.responsorial +  '">' + schData.name +'</a>' +'<br/><br/><br/> <br/><br/>';  
                          }
-                         mailMsg = mailMsg + '<p> Plese note that this mail is generated from an automated system and it is still in testing mode  </p>' ; 
-                         
+                        /* birthday data */
+                        if (bDayPerson){
+                          mailMsg = mailMsg + '<br/><br/><br/> <strong>This Week Birthday Celebrants: </strong> <br/><br/> '+bDayPerson; 
+                        }
 
-                       mailTo ='tilakmichael@gmail.com, tilakmichael@hotmail.com';
+                         mailMsg = mailMsg + '<br/><br/><br/><p> Please note that this mail is generated from an automated system and it is still in testing mode  </p>' ; 
+
+                         mailTo = 'tilakmichael@gmail.com, stmark1130choir@gmail.com' ;
+                        
+              
                         // mail data
                         var data = {
-                           from: 'St Mark Choir <stmark1130choir@gmail.com>',
+                           from: fromMail,
                            to: mailTo,
                            subject: mailhdr ,
                            //text: mailMsg  
-                           html: '<html>' + mailMsg +'</html>'   
+                           html: '<html> <head><meta http-equiv="content-type" content="text/html; charset=ISO-8859-15"> </head>' + mailMsg +'</html>'   
                         };
-                        
+
                         //console.log(data);
+                        
                         mailgun.messages().send(data, function (error, body) {
                             if (error) {
                                 console.log('Mail error ');
@@ -259,9 +282,8 @@ function processMail(id) {
                             }else {
                                 console.log(body);
                             }
-                           
                         });
-
+                    
                     }
                    } ) ; 
                  }
@@ -358,7 +380,6 @@ function deleteData(req , resp , next, dbtable) {
 
 // **********  Groups ***********************
 // get all data from groups
-//router.get('/stm/mlab/groups', jwtCheck);
 //router.get('/stm/mlab/groups',jwtCheck, function(req,resp, next){
 router.get('/stm/mlab/groups', function(req,resp, next){
 
@@ -366,7 +387,6 @@ router.get('/stm/mlab/groups', function(req,resp, next){
 } ) ;
 // get one row from groups
 //router.get('/stm/mlab/groups/:id', jwtCheck, function(req,resp, next){
-
 router.get('/stm/mlab/groups/:id',  function(req,resp, next){
       findOne(req,resp, next, db.groups);
 } ) ;
@@ -528,8 +548,5 @@ router.post('/stm/mlab/email/:id',function(req,resp, next) {
    }
    resp.send({success: true}) ;
 }) ; 
-
-
-
 
 module.exports = router ;

@@ -108,7 +108,8 @@ export class AppDataService {
        console.log('url ' +url ) ; 
        var header = new Headers() ; 
        header.append('content-type', 'application/json') ; 
-       return this.authhttp.post(url, null, {headers:header} )
+//       return this.authhttp.post(url, null, {headers:header} )
+       return this.http.post(url, null, {headers:header} )
            .map( (resp:Response) => resp.json() ) 
            .catch( (error:Response )=> {
                console.error(error) ;

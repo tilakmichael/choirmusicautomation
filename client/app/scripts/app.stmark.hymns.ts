@@ -107,7 +107,14 @@ public deleteData(id:string, index:number){
 public saveData(id:string, index:number){
     //console.log('Save ', id , index );
     
-    let data =  this.formDatas.value ; 
+    let data =  this.formDatas.value ;
+    
+     if ( this._common.findDuplicate(this.alldata, 'name.toUpperCase() =="'+data.name.toUpperCase()+'"', id) ) {
+        alert('The Name exists, please enter unique name')
+        return ;
+     } ;
+
+
     if (id == '-1') {
        //console.log('insert ', data.fname );
        this._data.addData(this.table,data).subscribe( _data => { 

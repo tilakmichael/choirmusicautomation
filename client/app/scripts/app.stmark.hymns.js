@@ -100,6 +100,11 @@ var AppHymns = (function () {
         //console.log('Save ', id , index );
         var _this = this;
         var data = this.formDatas.value;
+        if (this._common.findDuplicate(this.alldata, 'name.toUpperCase() =="' + data.name.toUpperCase() + '"', id)) {
+            alert('The Name exists, please enter unique name');
+            return;
+        }
+        ;
         if (id == '-1') {
             //console.log('insert ', data.fname );
             this._data.addData(this.table, data).subscribe(function (_data) {
